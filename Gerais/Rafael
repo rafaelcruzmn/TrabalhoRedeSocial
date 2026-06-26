@@ -1,0 +1,13 @@
+22/06:
+Discusão de Montagem do Banco
+24/06:
+Modelagem do Banco
+Script BD
+Prototipo
+Criação das classes "comentario", "like", "post", "usuario"
+Criacao das Includes "Menu", "Rodape" da view
+Criacao do Style
+Criacao da conexao do dao
+25/06 e 26/06:
+Tela de Login
+Separação de CSSs - Style ficou com caracteristicas do menu e rodape
