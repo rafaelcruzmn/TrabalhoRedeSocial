@@ -32,7 +32,7 @@ session_start();
                     <button type="submit" name="opcao" value="3" class="btn-form-login btn-castrar">Cadastrar</button>
 
                     <div class="links-extra">
-                        <a href="login.php" class="link-azul">Já possui uma conta? Faça login aqui.</a>
+                        <a href="index.php" class="link-azul">Já possui uma conta? Faça login aqui.</a>
                     </div>   
                 </form>
             </section>
