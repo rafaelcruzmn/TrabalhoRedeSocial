@@ -1,12 +1,12 @@
 <?php
     require_once '../dao/usuarioDAO.inc.php';
-    require_once '../classes/Usuario.inc.php';
+    require_once '../classes/usuario.inc.php';
 
-    $opcao = $_REQUEST['pOpcao'];
+    $opcao = $_POST['opcao'];
 
     if($opcao == 1){ // autenticar
-        $email = $_REQUEST['pEmail'];
-        $senha = $_REQUEST['pSenha'];
+        $email = $_POST['pEmail'];
+        $senha = $_POST['pSenha'];
 
         $usuarioDao = new UsuarioDao();
         $usuario = $usuarioDao->autenticar($email, $senha);
@@ -26,9 +26,17 @@
             unset($_SESSION['usuario']);
 
             header('Location: ../views/index.php');
-    } else if($opcao == 3) {
-        $usuarioDAO = new usuarioDAO();
+    } else if($opcao == 3) { // cadastrar
+        $nome = $_POST["nome"];
+        $email = $_POST["email"];
+        $senha = $_POST["senha"];
 
-        
+        $usuario = new Usuario($nome, $email, $senha, "");
+        $usuarioDAO = new UsuarioDAO();
+        $usuarioDAO->inserirUsuario($usuario);
+
+        session_start();
+        $_SESSION["usuario"] = $usuario;
+        header("Location: ../views/perfil.php");
     }
 ?>
