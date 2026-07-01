@@ -20,14 +20,15 @@
            header('Location: ../views/index.php?erro=1');
         }
 
-    }
-    else{
-        if($opcao == 2){ // logout
+    } else if($opcao == 2) { // logout
             session_start();
 
             unset($_SESSION['usuario']);
 
             header('Location: ../views/index.php');
-        }
+    } else if($opcao == 3) {
+        $usuarioDAO = new usuarioDAO();
+
+        
     }
 ?>

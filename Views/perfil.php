@@ -1,7 +1,7 @@
 <?php
-include 'Includes/menu.php';
+include 'includes/menu.php';
 require_once '../dao/usuarioDAO.inc.php';
-require_once '../classes/Usuario.inc.php';
+require_once '../classes/usuario.inc.php';
 
 session_start();
 

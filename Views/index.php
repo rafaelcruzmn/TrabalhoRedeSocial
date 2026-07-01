@@ -1,4 +1,4 @@
-<?php include 'Includes/menuLogin.php';
+<?php include 'includes/menuLogin.php';
 include 'formLogin.php';
-include 'Includes/rodape.php'; 
+include 'includes/rodape.php'; 
 ?>

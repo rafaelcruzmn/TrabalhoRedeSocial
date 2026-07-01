@@ -7,12 +7,7 @@ class Usuario{
     private $senha;
     private $descricaoUsuario;
 
-    function __construct(){
-       
-    }
-    
-    function setUsuario($nome, $email, $senha, $descricaoUsuario)
-    {
+    function __construct($nome, $email, $senha, $descricaoUsuario){
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = $senha;
