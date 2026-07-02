@@ -193,6 +193,14 @@
     color: #333;
 }
 
+.post-imagem {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 15px auto;
+}
+
 
 
 

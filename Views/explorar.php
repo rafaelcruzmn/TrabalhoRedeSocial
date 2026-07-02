@@ -35,7 +35,7 @@ $likeDAO = new LikeDAO();
     <div class="explorar-container">
         <h1>Crie uma nova publicação</h1>
 
-        <form class="form-post" action="../controlers/controlerPost.php" method="POST">
+        <form class="form-post" action="../controlers/controlerPost.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="opcao" value="1">
 
             <div class="form-grupo">
@@ -51,6 +51,11 @@ $likeDAO = new LikeDAO();
             <div class="form-grupo">
                 <label for="conteudo">Conteúdo:</label>
                 <textarea id="conteudo" name="conteudo" required></textarea>
+            </div>
+
+            <div class="form-grupo">
+                <label for="imagem">Imagem (opcional):</label>
+                <input type="file" id="imagem" name="imagem" accept="image/jpeg, image/png, image/gif">
             </div>
 
             <button type="submit" class="btn-postar">Postar</button>
@@ -75,6 +80,9 @@ $likeDAO = new LikeDAO();
                             <h4>
                                 <?= htmlspecialchars($post['descricao']) ?>
                             </h4>
+                        <?php endif; ?>
+                        <?php if (!empty($post['imagem'])) : ?>
+                            <img src="<?= htmlspecialchars($post['imagem']) ?>" alt="Imagem do post" class="post-imagem">
                         <?php endif; ?>
                         <p>
                             <?= nl2br(htmlspecialchars($post['texto'])) ?>

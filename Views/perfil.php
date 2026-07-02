@@ -3,7 +3,6 @@ include 'includes/menu.php';
 require_once '../dao/usuarioDAO.inc.php';
 require_once '../dao/postDAO.inc.php';
 require_once '../dao/comentarioDAO.inc.php';
-require_once '../dao/likeDAO.inc.php';
 require_once '../classes/usuario.inc.php';
 
 session_start();
@@ -42,9 +41,9 @@ $totalPosts = $postDAO->countPostsByUsuario($usuarioDoPerfil->getIdUsuario());
 $comentarioDAO = new ComentarioDAO();
 $totalComentarios = $comentarioDAO->countComentariosByUsuario($usuarioDoPerfil->getIdUsuario());
 
+// Buscar os posts do usuário do perfil
 $postsDoPerfil = $postDAO->getPostsByUsuarioId($usuarioDoPerfil->getIdUsuario());
 $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfil->getIdUsuario());
-$likeDAO = new LikeDAO();
 
 ?>
 <!DOCTYPE html>
@@ -119,14 +118,33 @@ $likeDAO = new LikeDAO();
 
     </aside>
 
+
+
+
+
+
+
+    <!-- AREA PRINCIPAL -->
+
     <section class="perfil-conteudo">
+
+
+
+        <!-- MENU SECUNDARIO -->
+
         <div class="sub-menu">
+
+
             <button id="btn-aba-posts" class="aba ativa">
                 Posts
             </button>
+
+
             <button id="btn-aba-comentarios" class="aba">
                 Comentários
             </button>
+
+
         </div>
 
         <div id="conteudo-posts" class="lista-posts">
@@ -142,34 +160,11 @@ $likeDAO = new LikeDAO();
                         <?php if (!empty($post['descricao'])) : ?>
                             <h4><?= htmlspecialchars($post['descricao']) ?></h4>
                         <?php endif; ?>
+                        <?php if (!empty($post['imagem'])) : ?>
+                            <img src="<?= htmlspecialchars($post['imagem']) ?>" alt="Imagem do post" class="post-imagem">
+                        <?php endif; ?>
                         <p><?= nl2br(htmlspecialchars($post['texto'])) ?></p>
                         <small>POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?></small>
-
-                        <?php
-                            $totalLikes = $likeDAO->contarLikes($post['idpost']);
-                            $usuarioCurtiu = $likeDAO->verificarLike($usuarioLogado->getIdUsuario(), $post['idpost']);
-                        ?>
-                        <div class="like-secao">
-                            <form action="../controlers/controlerLike.php" method="POST" style="margin: 0;">
-                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
-                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
-                                <button type="submit" class="btn-like <?= $usuarioCurtiu ? 'liked' : '' ?>">
-                                    <?= $usuarioCurtiu ? 'Curtido' : 'Curtir' ?>
-                                </button>
-                            </form>
-                            <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
-                        </div>
-                        
-                        <?php if ($isOwner && $usuarioLogado->getIdUsuario() == $post['autor_id']) : ?>
-                            <div class="post-actions">
-                                <form action="../controlers/controlerPost.php" method="POST" style="margin-top: 10px;">
-                                    <input type="hidden" name="opcao" value="2">
-                                    <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
-                                    <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
-                                    <button type="submit" class="btn-excluir-post">Excluir Post</button>
-                                </form>
-                            </div>
-                        <?php endif; ?>
 
                         <!-- Seção de Comentários -->
                         <div class="comentarios-secao">
@@ -222,35 +217,13 @@ $likeDAO = new LikeDAO();
                         <?php if (!empty($post['descricao'])) : ?>
                             <h4><?= htmlspecialchars($post['descricao']) ?></h4>
                         <?php endif; ?>
+                        <?php if (!empty($post['imagem'])) : ?>
+                            <img src="<?= htmlspecialchars($post['imagem']) ?>" alt="Imagem do post" class="post-imagem">
+                        <?php endif; ?>
                         <p><?= nl2br(htmlspecialchars($post['texto'])) ?></p>
                         <small>POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?></small>
 
-                        <?php
-                            $totalLikes = $likeDAO->contarLikes($post['idpost']);
-                            $usuarioCurtiu = $likeDAO->verificarLike($usuarioLogado->getIdUsuario(), $post['idpost']);
-                        ?>
-                        <div class="like-secao">
-                            <form action="../controlers/controlerLike.php" method="POST" style="margin: 0;">
-                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
-                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
-                                <button type="submit" class="btn-like <?= $usuarioCurtiu ? 'liked' : '' ?>">
-                                    <?= $usuarioCurtiu ? 'Curtido' : 'Curtir' ?>
-                                </button>
-                            </form>
-                            <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
-                        </div>
-
-                        <?php if ($isOwner && $usuarioLogado->getIdUsuario() == $post['autor_id']) : ?>
-                            <div class="post-actions">
-                                <form action="../controlers/controlerPost.php" method="POST" style="margin-top: 10px;">
-                                    <input type="hidden" name="opcao" value="2">
-                                    <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
-                                    <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
-                                    <button type="submit" class="btn-excluir-post">Excluir Post</button>
-                                </form>
-                            </div>
-                        <?php endif; ?>
-
+                        <!-- Seção de Comentários -->
                         <div class="comentarios-secao">
                             <h5 class="comentarios-titulo">Comentários</h5>
                             <?php 
@@ -294,6 +267,7 @@ $likeDAO = new LikeDAO();
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Lógica das abas
         const abaPosts = document.getElementById('btn-aba-posts');
         const abaComentarios = document.getElementById('btn-aba-comentarios');
         const conteudoPosts = document.getElementById('conteudo-posts');
@@ -314,6 +288,7 @@ $likeDAO = new LikeDAO();
         });
 
         <?php if ($isOwner) : ?>
+        // Lógica de edição do perfil
         const btnEditar = document.getElementById('btn-editar');
         const btnSalvar = document.getElementById('btn-salvar');
         const btnCancelar = document.getElementById('btn-cancelar');

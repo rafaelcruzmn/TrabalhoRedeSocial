@@ -22,6 +22,7 @@ class PostDAO
         $sql->bindValue(':usuario_idusuario', $post->getUsuario_idusuario());
 
         $sql->execute();
+        return $this->con->lastInsertId();
     }
 
     public function getTodosPosts()
@@ -64,11 +65,35 @@ class PostDAO
 
     public function excluirPost($idPost, $idUsuario)
     {
+        // Primeiro, buscar o caminho da imagem para poder excluí-la do servidor
+        $sqlSelect = $this->con->prepare("SELECT imagem FROM Post WHERE idpost = :idPost AND usuario_idusuario = :idUsuario");
+        $sqlSelect->bindValue(':idPost', $idPost);
+        $sqlSelect->bindValue(':idUsuario', $idUsuario);
+        $sqlSelect->execute();
+        $resultado = $sqlSelect->fetch(PDO::FETCH_ASSOC);
+
+        if ($resultado && !empty($resultado['imagem'])) {
+            // O caminho no BD é relativo à pasta 'views', ex: 'imagens/posts/1.jpg'
+            // Para excluir, precisamos do caminho a partir do DAO (que está em 'dao/').
+            $caminhoArquivo = __DIR__ . '/../views/' . $resultado['imagem'];
+            if (file_exists($caminhoArquivo)) {
+                unlink($caminhoArquivo);
+            }
+        }
+
+        // Agora, excluir o post do banco de dados
         $sql = $this->con->prepare(
             "DELETE FROM Post WHERE idpost = :idPost AND usuario_idusuario = :idUsuario"
         );
         $sql->bindValue(':idPost', $idPost);
         $sql->bindValue(':idUsuario', $idUsuario);
+        return $sql->execute();
+    }
+
+    public function atualizarCaminhoImagem($idPost, $caminhoImagem) {
+        $sql = $this->con->prepare("UPDATE Post SET imagem = :imagem WHERE idpost = :idPost");
+        $sql->bindValue(':imagem', $caminhoImagem);
+        $sql->bindValue(':idPost', $idPost);
         return $sql->execute();
     }
 }

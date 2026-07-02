@@ -7,8 +7,9 @@ class Post
     private $texto;
     private $datapost;
     private $usuario_idusuario;
+    private $imagem;
 
-    public function __construct($idpost, $titulo, $descricao, $texto, $datapost, $usuario_idusuario)
+    public function __construct($idpost, $titulo, $descricao, $texto, $datapost, $usuario_idusuario, $imagem = null)
     {
         $this->idpost = $idpost;
         $this->titulo = $titulo;
@@ -16,6 +17,7 @@ class Post
         $this->texto = $texto;
         $this->datapost = $datapost;
         $this->usuario_idusuario = $usuario_idusuario;
+        $this->imagem = $imagem;
     }
 
     public function getIdpost()
@@ -48,6 +50,11 @@ class Post
         return $this->usuario_idusuario;
     }
 
+    public function getImagem()
+    {
+        return $this->imagem;
+    }
+
     public function setIdpost($idpost)
     {
         $this->idpost = $idpost;
@@ -68,14 +75,9 @@ class Post
         $this->texto = $texto;
     }
 
-    public function setDatapost($datapost)
+    public function setImagem($imagem)
     {
-        $this->datapost = $datapost;
-    }
-
-    public function setUsuario_idusuario($usuario_idusuario)
-    {
-        $this->usuario_idusuario = $usuario_idusuario;
+        $this->imagem = $imagem;
     }
 }
 ?>

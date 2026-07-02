@@ -123,6 +123,14 @@
     color: #888;
 }
 
+.post-imagem {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 15px auto;
+}
+
 .sem-posts {
     padding: 40px 20px;
     text-align: center;

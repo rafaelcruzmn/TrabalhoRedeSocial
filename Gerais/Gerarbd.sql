@@ -16,6 +16,7 @@ CREATE TABLE Post (
     titulo VARCHAR(30) NOT NULL,
     texto VARCHAR(255) NOT NULL,
     datapost DATETIME DEFAULT CURRENT_TIMESTAMP,
+    imagem VARCHAR(255) NULL DEFAULT NULL,
     usuario_idusuario INT NOT NULL,
 
     CONSTRAINT fk_Post_Usuario

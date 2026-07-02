@@ -17,9 +17,37 @@ if ($opcao == 1) { // Criar Post
         $texto = $_POST['conteudo'];
 
         $postDAO = new PostDAO();
-        $novoPost = new Post(null, $titulo, $descricao, $texto, null, $idUsuario);
+        // A imagem será tratada depois, o último parâmetro é para imagem
+        $novoPost = new Post(null, $titulo, $descricao, $texto, null, $idUsuario, null);
 
-        $postDAO->incluirPost($novoPost);
+        // 1. Inserir o post para obter o ID
+        $idPost = $postDAO->incluirPost($novoPost);
+
+        // 2. Lógica de upload de imagem, se houver
+        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == 0) {
+            $imagem = $_FILES['imagem'];
+            $extensao = pathinfo($imagem['name'], PATHINFO_EXTENSION);
+            $extensoesPermitidas = ['jpg', 'jpeg', 'png', 'gif'];
+
+            if (in_array(strtolower($extensao), $extensoesPermitidas)) {
+                // Nome do arquivo: <id_post>.<extensao>
+                $novoNomeImagem = $idPost . '.' . $extensao;
+
+                // Caminho para salvar o arquivo (relativo ao controlador)
+                $pastaUpload = '../views/imagens/posts/';
+                if (!is_dir($pastaUpload)) {
+                    mkdir($pastaUpload, 0777, true);
+                }
+                $caminhoArquivo = $pastaUpload . $novoNomeImagem;
+
+                if (move_uploaded_file($imagem['tmp_name'], $caminhoArquivo)) {
+                    // 3. Atualizar o post no banco com o caminho da imagem
+                    // O caminho no BD deve ser relativo à pasta 'views'
+                    $caminhoParaBD = 'imagens/posts/' . $novoNomeImagem;
+                    $postDAO->atualizarCaminhoImagem($idPost, $caminhoParaBD);
+                }
+            }
+        }
 
         header("Location: ../views/explorar.php");
     } else {
