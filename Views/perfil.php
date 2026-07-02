@@ -159,6 +159,17 @@ $likeDAO = new LikeDAO();
                             </form>
                             <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
                         </div>
+                        
+                        <?php if ($isOwner && $usuarioLogado->getIdUsuario() == $post['autor_id']) : ?>
+                            <div class="post-actions">
+                                <form action="../controlers/controlerPost.php" method="POST" style="margin-top: 10px;">
+                                    <input type="hidden" name="opcao" value="2">
+                                    <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                    <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                    <button type="submit" class="btn-excluir-post">Excluir Post</button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
 
                         <!-- Seção de Comentários -->
                         <div class="comentarios-secao">
@@ -228,6 +239,17 @@ $likeDAO = new LikeDAO();
                             </form>
                             <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
                         </div>
+
+                        <?php if ($isOwner && $usuarioLogado->getIdUsuario() == $post['autor_id']) : ?>
+                            <div class="post-actions">
+                                <form action="../controlers/controlerPost.php" method="POST" style="margin-top: 10px;">
+                                    <input type="hidden" name="opcao" value="2">
+                                    <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                    <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                    <button type="submit" class="btn-excluir-post">Excluir Post</button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
 
                         <div class="comentarios-secao">
                             <h5 class="comentarios-titulo">Comentários</h5>

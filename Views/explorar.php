@@ -98,11 +98,22 @@ $likeDAO = new LikeDAO();
                             <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
                         </div>
 
+                        <?php if ($usuarioLogado->getIdUsuario() == $post['autor_id']) : ?>
+                            <div class="post-actions">
+                                <form action="../controlers/controlerPost.php" method="POST" style="margin-top: 10px;">
+                                    <input type="hidden" name="opcao" value="2">
+                                    <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                    <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                    <button type="submit" class="btn-excluir-post">Excluir Post</button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
+
                         <!-- Seção de Comentários -->
                         <div class="comentarios-secao">
                             <h5 class="comentarios-titulo">Comentários</h5>
                             
-                            <?php 
+                            <?php
                                 $comentarios = $comentarioDAO->getComentariosByPostId($post['idpost']);
                                 if (count($comentarios) > 0): 
                             ?>
@@ -131,7 +142,7 @@ $likeDAO = new LikeDAO();
                                 <button type="submit">Comentar</button>
                             </form>
                         </div>
-                    </div>
+                    </div> <!-- Fim do .post -->
                 <?php endforeach; ?>
             <?php else : ?>
                 <div class="sem-posts">

@@ -67,7 +67,6 @@ class UsuarioDao{
 
     public function atualizarUsuario(Usuario $usuario) {
         try {
-            // Note que a coluna para nome é 'usuario' e para descrição é 'descricao' no seu banco
             $sql = $this->con->prepare("UPDATE usuario SET usuario = :nome, descricao = :descricao WHERE idusuario = :id");
             
             $sql->bindValue(':nome', $usuario->getNome());

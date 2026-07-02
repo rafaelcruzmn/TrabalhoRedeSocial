@@ -30,19 +30,15 @@
         $nome = $_POST["nome"];
         $email = $_POST["email"];
         $senha = $_POST["senha"];
-        // Pega a descrição do formulário se houver, caso contrário define vazio
+
         $descricao = isset($_POST["descricao"]) ? $_POST["descricao"] : ""; 
 
         $usuarioDAO = new UsuarioDAO();
 
-        // 1. Criamos o objeto temporário enviando NULL no ID (pois o banco ainda vai gerar)
         $usuarioTemp = new Usuario(NULL, $nome, $email, $senha, $descricao);
         
-        // 2. Executa a inserção e captura o ID real gerado pelo banco de dados
         $idGeradoPeloBanco = $usuarioDAO->inserirUsuario($usuarioTemp);
 
-        // 3. AGORA CRIAMOS O USUÁRIO DEFINITIVO NO CONTROLADOR COM ID E DESCRIÇÃO DO BANCO
-        // Passando exatamente os 5 argumentos na ordem correta que o __construct espera
         $usuario = new Usuario($idGeradoPeloBanco, $nome, $email, $senha, $descricao);
 
         session_start();
@@ -56,17 +52,14 @@
             $novoNome = $_POST["nome"];
             $novaDescricao = $_POST["descricao"];
 
-            // Atualiza o objeto na sessão
             $usuarioLogado->setNome($novoNome);
             $usuarioLogado->setDescricaoUsuario($novaDescricao);
 
-            // Persiste a mudança no banco de dados
             $usuarioDAO = new UsuarioDAO();
             $usuarioDAO->atualizarUsuario($usuarioLogado);
 
             header("Location: ../views/perfil.php");
         } else {
-            // Usuário não logado tentando atualizar, redireciona para o login
             header("Location: ../views/formLogin.php?erro=2");
         }
     }

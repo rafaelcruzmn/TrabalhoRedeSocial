@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['opcao'])) {
 
             $textoComentario = $_POST['texto'];
             $idPost = $_POST['idpost'];
-            $redirectUrl = $_POST['redirect_url']; // Para voltar à página correta
+            $redirectUrl = $_POST['redirect_url'];
 
             $comentarioDAO = new ComentarioDAO();
             $novoComentario = new Comentario(null, $textoComentario, null, $idPost, $idUsuario);
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['opcao'])) {
             exit();
 
         } else {
-            header("Location: ../views/formLogin.php?erro=2"); // Erro=2: Acesso negado
+            header("Location: ../views/formLogin.php?erro=2");
             exit();
         }
     }

@@ -61,5 +61,15 @@ class PostDAO
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function excluirPost($idPost, $idUsuario)
+    {
+        $sql = $this->con->prepare(
+            "DELETE FROM Post WHERE idpost = :idPost AND usuario_idusuario = :idUsuario"
+        );
+        $sql->bindValue(':idPost', $idPost);
+        $sql->bindValue(':idUsuario', $idUsuario);
+        return $sql->execute();
+    }
 }
 ?>

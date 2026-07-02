@@ -25,5 +25,23 @@ if ($opcao == 1) { // Criar Post
     } else {
         header("Location: ../views/formLogin.php?erro=2"); // Erro=2: Acesso negado
     }
+} else if ($opcao == 2) { // Excluir Post
+    if (isset($_SESSION['usuario'])) {
+        $usuarioLogado = $_SESSION['usuario'];
+        $idUsuario = $usuarioLogado->getIdUsuario();
+
+        $idPost = $_POST['idpost'];
+        $redirectUrl = $_POST['redirect_url'];
+
+        $postDAO = new PostDAO();
+        $postDAO->excluirPost($idPost, $idUsuario);
+
+        header("Location: " . $redirectUrl);
+        exit();
+
+    } else {
+        header("Location: ../views/formLogin.php?erro=2"); // Erro=2: Acesso negado
+        exit();
+    }
 }
 ?>
