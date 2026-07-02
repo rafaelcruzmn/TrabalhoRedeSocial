@@ -41,8 +41,8 @@ $totalPosts = $postDAO->countPostsByUsuario($usuarioDoPerfil->getIdUsuario());
 $comentarioDAO = new ComentarioDAO();
 $totalComentarios = $comentarioDAO->countComentariosByUsuario($usuarioDoPerfil->getIdUsuario());
 
-// Buscar os posts do usuário do perfil
 $postsDoPerfil = $postDAO->getPostsByUsuarioId($usuarioDoPerfil->getIdUsuario());
+$postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfil->getIdUsuario());
 
 ?>
 <!DOCTYPE html>
@@ -116,36 +116,17 @@ $postsDoPerfil = $postDAO->getPostsByUsuarioId($usuarioDoPerfil->getIdUsuario())
 
     </aside>
 
-
-
-
-
-
-
-    <!-- AREA PRINCIPAL -->
-
     <section class="perfil-conteudo">
-
-
-
-        <!-- MENU SECUNDARIO -->
-
         <div class="sub-menu">
-
-
-            <button class="aba ativa">
+            <button id="btn-aba-posts" class="aba ativa">
                 Posts
             </button>
-
-
-            <button class="aba">
+            <button id="btn-aba-comentarios" class="aba">
                 Comentários
             </button>
-
-
         </div>
 
-        <div class="lista-posts">
+        <div id="conteudo-posts" class="lista-posts">
             <?php if (count($postsDoPerfil) > 0) : ?>
                 <?php foreach ($postsDoPerfil as $post) : ?>
                     <div class="post">
@@ -198,26 +179,95 @@ $postsDoPerfil = $postDAO->getPostsByUsuarioId($usuarioDoPerfil->getIdUsuario())
                 <div class="sem-posts">Esse usuário ainda não possui posts!</div>
             <?php endif; ?>
         </div>
+
+        <div id="conteudo-comentarios" class="lista-posts" style="display: none;">
+            <?php if (count($postsComentados) > 0) : ?>
+                <?php foreach ($postsComentados as $post) : ?>
+                    <div class="post">
+                        <span>
+                            <a href="perfil.php?id=<?= $post['autor_id'] ?>" style="text-decoration: none; color: inherit;">
+                                @<?= htmlspecialchars($post['nome_autor']) ?>
+                            </a>
+                        </span>
+                        <h2><?= htmlspecialchars($post['titulo']) ?></h2>
+                        <?php if (!empty($post['descricao'])) : ?>
+                            <h4><?= htmlspecialchars($post['descricao']) ?></h4>
+                        <?php endif; ?>
+                        <p><?= nl2br(htmlspecialchars($post['texto'])) ?></p>
+                        <small>POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?></small>
+
+                        <div class="comentarios-secao">
+                            <h5 class="comentarios-titulo">Comentários</h5>
+                            <?php 
+                                $comentarios = $comentarioDAO->getComentariosByPostId($post['idpost']);
+                                if (count($comentarios) > 0): 
+                            ?>
+                                <div class="lista-comentarios">
+                                    <?php foreach ($comentarios as $comentario): ?>
+                                        <div class="comentario">
+                                            <p>
+                                                <a href="perfil.php?id=<?= $comentario['usuario_idusuario'] ?>">
+                                                    <strong>@<?= htmlspecialchars($comentario['nome_autor']) ?></strong>
+                                                </a>:
+                                                <?= htmlspecialchars($comentario['texto']) ?>
+                                            </p>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <p class="sem-comentarios">Seja o primeiro a comentar!</p>
+                            <?php endif; ?>
+
+                            <form action="../controlers/controlerComentario.php" method="POST" class="form-comentario">
+                                <input type="hidden" name="opcao" value="1">
+                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                <input type="text" name="texto" placeholder="Escreva um comentário..." required>
+                                <button type="submit">Comentar</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <div class="sem-posts">O usuário não comentou em nenhum post ainda.</div>
+            <?php endif; ?>
+        </div>
     </section>
 
 
 </div>
 
-<?php if ($isOwner) : ?>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const abaPosts = document.getElementById('btn-aba-posts');
+        const abaComentarios = document.getElementById('btn-aba-comentarios');
+        const conteudoPosts = document.getElementById('conteudo-posts');
+        const conteudoComentarios = document.getElementById('conteudo-comentarios');
+
+        abaPosts.addEventListener('click', function() {
+            conteudoPosts.style.display = 'block';
+            conteudoComentarios.style.display = 'none';
+            abaPosts.classList.add('ativa');
+            abaComentarios.classList.remove('ativa');
+        });
+
+        abaComentarios.addEventListener('click', function() {
+            conteudoPosts.style.display = 'none';
+            conteudoComentarios.style.display = 'block';
+            abaComentarios.classList.add('ativa');
+            abaPosts.classList.remove('ativa');
+        });
+
+        <?php if ($isOwner) : ?>
         const btnEditar = document.getElementById('btn-editar');
         const btnSalvar = document.getElementById('btn-salvar');
         const btnCancelar = document.getElementById('btn-cancelar');
-
         const displayNome = document.getElementById('display-nome');
         const editNome = document.getElementById('edit-nome');
         const inputNome = editNome.querySelector('input');
-
         const displayDescricao = document.getElementById('display-descricao');
         const editDescricao = document.getElementById('edit-descricao');
         const textareaDescricao = editDescricao.querySelector('textarea');
-
         const originalNome = inputNome.value;
         const originalDescricao = textareaDescricao.value;
 
@@ -225,25 +275,19 @@ $postsDoPerfil = $postDAO->getPostsByUsuarioId($usuarioDoPerfil->getIdUsuario())
             displayNome.style.display = isEditing ? 'none' : 'block';
             displayDescricao.style.display = isEditing ? 'none' : 'block';
             btnEditar.style.display = isEditing ? 'none' : 'inline-block';
-
             editNome.style.display = isEditing ? 'block' : 'none';
             editDescricao.style.display = isEditing ? 'block' : 'none';
             btnSalvar.style.display = isEditing ? 'inline-block' : 'none';
             btnCancelar.style.display = isEditing ? 'inline-block' : 'none';
         }
-
-        btnEditar.addEventListener('click', function() {
-            toggleEdit(true);
-        });
-
-        btnCancelar.addEventListener('click', function() {
-            // Restaura os valores originais nos campos do formulário
+        btnEditar.addEventListener('click', () => toggleEdit(true));
+        btnCancelar.addEventListener('click', () => {
             inputNome.value = originalNome;
             textareaDescricao.value = originalDescricao;
             toggleEdit(false);
         });
+        <?php endif; ?>
     });
 </script>
-<?php endif; ?>
 
 <?php include 'Includes/rodape.php'; ?>

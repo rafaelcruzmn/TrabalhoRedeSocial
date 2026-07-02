@@ -43,5 +43,21 @@ class ComentarioDAO
         $sql->bindValue(':idUsuario', $comentario->getUsuario_idusuario());
         $sql->execute();
     }
+
+    public function getPostsComentadosPeloUsuario($idUsuario)
+    {
+        $sql = $this->con->prepare(
+            "SELECT p.*, u.usuario as nome_autor, u.idusuario as autor_id
+             FROM comentario c
+             JOIN post p ON c.post_idpost = p.idpost
+             JOIN usuario u ON p.usuario_idusuario = u.idusuario
+             WHERE c.usuario_idusuario = :idUsuario
+             GROUP BY p.idpost
+             ORDER BY MAX(c.datacoment) DESC"
+        );
+        $sql->bindValue(':idUsuario', $idUsuario);
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
