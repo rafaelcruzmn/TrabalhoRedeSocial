@@ -297,3 +297,23 @@
     color: rgb(0, 0, 0);
 
 }
+
+.post-actions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.btn-excluir-post {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-excluir-post:hover {
+    background-color: #c82333;
+}

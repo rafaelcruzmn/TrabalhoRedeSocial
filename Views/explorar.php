@@ -112,7 +112,7 @@ $likeDAO = new LikeDAO();
                                     <input type="hidden" name="opcao" value="2">
                                     <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
                                     <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
-                                    <button type="submit" class="btn-excluir-post">Excluir Post</button>
+                                    <button type="submit" class="btn-excluir-post" onclick="return confirm('Tem certeza que deseja excluir este post?');">Excluir Post</button>
                                 </form>
                             </div>
                         <?php endif; ?>

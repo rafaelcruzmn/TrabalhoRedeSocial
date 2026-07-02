@@ -166,6 +166,35 @@ $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfi
                         <p><?= nl2br(htmlspecialchars($post['texto'])) ?></p>
                         <small>POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?></small>
 
+<<<<<<< HEAD
+=======
+                        <?php
+                            $totalLikes = $likeDAO->contarLikes($post['idpost']);
+                            $usuarioCurtiu = $likeDAO->verificarLike($usuarioLogado->getIdUsuario(), $post['idpost']);
+                        ?>
+                        <div class="like-secao">
+                            <form action="../controlers/controlerLike.php" method="POST" style="margin: 0;">
+                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                <button type="submit" class="btn-like <?= $usuarioCurtiu ? 'liked' : '' ?>">
+                                    <?= $usuarioCurtiu ? 'Curtido' : 'Curtir' ?>
+                                </button>
+                            </form>
+                            <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
+                        </div>
+                        
+                        <?php if ($isOwner && $usuarioLogado->getIdUsuario() == $post['autor_id']) : ?>
+                            <div class="post-actions">
+                                <form action="../controlers/controlerPost.php" method="POST" style="margin-top: 10px;">
+                                    <input type="hidden" name="opcao" value="2">
+                                    <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                    <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                    <button type="submit" class="btn-excluir-post" onclick="return confirm('Tem certeza que deseja excluir este post?');">Excluir Post</button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
+
+>>>>>>> feature/exclusao-post
                         <!-- Seção de Comentários -->
                         <div class="comentarios-secao">
                             <h5 class="comentarios-titulo">Comentários</h5>
@@ -223,7 +252,32 @@ $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfi
                         <p><?= nl2br(htmlspecialchars($post['texto'])) ?></p>
                         <small>POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?></small>
 
-                        <!-- Seção de Comentários -->
+                        <?php
+                            $totalLikes = $likeDAO->contarLikes($post['idpost']);
+                            $usuarioCurtiu = $likeDAO->verificarLike($usuarioLogado->getIdUsuario(), $post['idpost']);
+                        ?>
+                        <div class="like-secao">
+                            <form action="../controlers/controlerLike.php" method="POST" style="margin: 0;">
+                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                <button type="submit" class="btn-like <?= $usuarioCurtiu ? 'liked' : '' ?>">
+                                    <?= $usuarioCurtiu ? 'Curtido' : 'Curtir' ?>
+                                </button>
+                            </form>
+                            <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
+                        </div>
+
+                        <?php if ($isOwner && $usuarioLogado->getIdUsuario() == $post['autor_id']) : ?>
+                            <div class="post-actions">
+                                <form action="../controlers/controlerPost.php" method="POST" style="margin-top: 10px;">
+                                    <input type="hidden" name="opcao" value="2">
+                                    <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                    <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                    <button type="submit" class="btn-excluir-post" onclick="return confirm('Tem certeza que deseja excluir este post?');">Excluir Post</button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
+
                         <div class="comentarios-secao">
                             <h5 class="comentarios-titulo">Comentários</h5>
                             <?php 
