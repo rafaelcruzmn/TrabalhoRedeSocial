@@ -30,10 +30,20 @@
         $nome = $_POST["nome"];
         $email = $_POST["email"];
         $senha = $_POST["senha"];
+        // Pega a descrição do formulário se houver, caso contrário define vazio
+        $descricao = isset($_POST["descricao"]) ? $_POST["descricao"] : ""; 
 
-        $usuario = new Usuario($nome, $email, $senha, "");
         $usuarioDAO = new UsuarioDAO();
-        $usuarioDAO->inserirUsuario($usuario);
+
+        // 1. Criamos o objeto temporário enviando NULL no ID (pois o banco ainda vai gerar)
+        $usuarioTemp = new Usuario(NULL, $nome, $email, $senha, $descricao);
+        
+        // 2. Executa a inserção e captura o ID real gerado pelo banco de dados
+        $idGeradoPeloBanco = $usuarioDAO->inserirUsuario($usuarioTemp);
+
+        // 3. AGORA CRIAMOS O USUÁRIO DEFINITIVO NO CONTROLADOR COM ID E DESCRIÇÃO DO BANCO
+        // Passando exatamente os 5 argumentos na ordem correta que o __construct espera
+        $usuario = new Usuario($idGeradoPeloBanco, $nome, $email, $senha, $descricao);
 
         session_start();
         $_SESSION["usuario"] = $usuario;

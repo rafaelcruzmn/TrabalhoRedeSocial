@@ -1,27 +1,28 @@
 <?php
 
 class Usuario{
-    private $usuario_id;
+    private $idUsuario;
     private $nome;
     private $email;
     private $senha;
     private $descricaoUsuario;
 
-    function __construct($nome, $email, $senha, $descricaoUsuario){
+    function __construct($idUsuario, $nome, $email, $senha, $descricaoUsuario){
+        $this->idUsuario = $idUsuario;
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = $senha;
         $this->descricaoUsuario = $descricaoUsuario;
     }
 
-    public function getUsuario_id()
+    public function getIdUsuario()
     {
-        return $this->usuario_id;
+        return $this->idUsuario;
     }
 
-    public function setUsuario_id($Id)
+    public function setIdUsuario($Id)
     {
-        return $this->usuario_id = $Id;
+        return $this->idUsuario = $Id;
     }
     
     public function getNome()

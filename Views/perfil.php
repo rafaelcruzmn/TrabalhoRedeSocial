@@ -11,10 +11,11 @@ if (!isset($_SESSION['usuario'])) {
 }
 $usuarioLogado = $_SESSION['usuario'];
 $usuarioDAO = new UsuarioDAO();
-$idDoUsuario = $usuarioLogado->getUsuario_id();
+$idDoUsuario = $usuarioLogado->getIdUsuario();
 
 // Passa o ID para a DAO resgatar a descrição diretamente - Obs tentei fazer da mesma forma que o getNome() do h1, porêm não consegui, então fiz assim mesmo.
-$descricao = $usuarioDAO->getDescricaoUsuarioDAO($idDoUsuario);
+//$descricao = $usuarioDAO->getDescricaoUsuarioDAO($idDoUsuario);
+$descricao = $usuarioLogado->getDescricaoUsuario();
 if (empty($descricao)) {
     $descricao = "Este usuário ainda não adicionou uma descrição.";
 }

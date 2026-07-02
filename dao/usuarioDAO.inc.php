@@ -1,6 +1,6 @@
 <?php
 require_once 'conexao.inc.php';
-require_once '../classes/Usuario.inc.php';
+require_once '../classes/usuario.inc.php';
 
 class UsuarioDao{
     private $con;
@@ -10,31 +10,38 @@ class UsuarioDao{
         $this->con = $conexao->getConexao();
     }
 
-    public function autenticar($email, $senha){
-        $sql = $this->con->prepare("select * from Usuario where Email = :email and Senha = :senha");
+    public function autenticar($email, $senha) {
+        $sql = $this->con->prepare("SELECT * FROM usuario WHERE email = :email");
         $sql->bindValue(':email', $email);
-        $sql->bindValue(':senha', $senha);
         $sql->execute();
 
-        if($sql->rowCount() > 0){
+        if($sql->rowCount() > 0) {
             $registro = $sql->fetch(PDO::FETCH_OBJ);
-            $usuario = new Usuario();
-            $usuario->setUsuario_id($registro->idUsuario);
-            $usuario->setNome($registro->Usuario);
-            $usuario->setEmail($registro->Email);
-            return $usuario;
+            
+            if(password_verify($senha, $registro->senha)) {
+                $usuario = new Usuario(
+                    $registro->idusuario,
+                    $registro->usuario,
+                    $registro->email, 
+                    $registro->senha, 
+                    $registro->descricao
+                );
+                
+                return $usuario;
+            }
         }
-        else{
-            return NULL;
-        }
+        return NULL;
     }
 
     public function inserirUsuario(Usuario $usuario){
-        $sql = $this->con->prepare("insert into Usuario (Usuario, Email, Senha) values (:nom, :email, :senha)");
+        $sql = $this->con->prepare("INSERT INTO usuario (usuario, email, senha, descricao) VALUES (:nom, :email, :senha, :desc)");
         $sql->bindValue(':nom', $usuario->getNome());
         $sql->bindValue(':email', $usuario->getEmail());
-        $sql->bindValue(':senha', $usuario->getSenha());
+        $sql->bindValue(':senha', password_hash($usuario->getSenha(), PASSWORD_BCRYPT));
+        $sql->bindValue(':desc', NULL);
         $sql->execute();
+
+        return $this->con->lastInsertId();
     }
 
     public function getDescricaoUsuarioDAO($id){
