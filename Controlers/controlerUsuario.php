@@ -48,5 +48,26 @@
         session_start();
         $_SESSION["usuario"] = $usuario;
         header("Location: ../views/perfil.php");
+    } else if($opcao == 4) { // atualizar perfil
+        session_start();
+        if (isset($_SESSION['usuario'])) {
+            $usuarioLogado = $_SESSION['usuario'];
+            
+            $novoNome = $_POST["nome"];
+            $novaDescricao = $_POST["descricao"];
+
+            // Atualiza o objeto na sessão
+            $usuarioLogado->setNome($novoNome);
+            $usuarioLogado->setDescricaoUsuario($novaDescricao);
+
+            // Persiste a mudança no banco de dados
+            $usuarioDAO = new UsuarioDAO();
+            $usuarioDAO->atualizarUsuario($usuarioLogado);
+
+            header("Location: ../views/perfil.php");
+        } else {
+            // Usuário não logado tentando atualizar, redireciona para o login
+            header("Location: ../views/formLogin.php?erro=2");
+        }
     }
 ?>

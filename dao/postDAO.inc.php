@@ -27,7 +27,7 @@ class PostDAO
     public function getTodosPosts()
     {
         $sql = $this->con->prepare(
-            "SELECT p.*, u.usuario as nome_autor
+            "SELECT p.*, u.usuario as nome_autor, u.idusuario as autor_id
              FROM Post p
              JOIN Usuario u ON p.usuario_idusuario = u.idusuario
              ORDER BY p.datapost DESC"
@@ -37,6 +37,15 @@ class PostDAO
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
         return [];
+    }
+
+    public function countPostsByUsuario($idUsuario)
+    {
+        $sql = $this->con->prepare("SELECT COUNT(*) as total FROM Post WHERE usuario_idusuario = :idUsuario");
+        $sql->bindValue(':idUsuario', $idUsuario);
+        $sql->execute();
+        $resultado = $sql->fetch(PDO::FETCH_ASSOC);
+        return $resultado['total'] ?? 0;
     }
 }
 ?>

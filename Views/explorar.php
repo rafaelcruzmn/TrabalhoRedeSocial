@@ -57,7 +57,9 @@ $posts = $postDAO->getTodosPosts();
                 <?php foreach ($posts as $post) : ?>
                     <div class="post">
                         <span>
-                            @<?= htmlspecialchars($post['nome_autor']) ?>
+                            <a href="perfil.php?id=<?= $post['autor_id'] ?>" style="text-decoration: none; color: inherit;">
+                                @<?= htmlspecialchars($post['nome_autor']) ?>
+                            </a>
                         </span>
                         <h2>
                             <?= htmlspecialchars($post['titulo']) ?>

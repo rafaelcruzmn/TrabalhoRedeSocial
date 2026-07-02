@@ -61,6 +61,50 @@
 
 }
 
+.btn-salvar,
+.btn-cancelar {
+    border: none;
+    background: #5cb85c;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.btn-cancelar {
+    background: #d9534f;
+}
+
+.btn-salvar:hover {
+    background: #4cae4c;
+}
+
+.btn-cancelar:hover {
+    background: #c9302c;
+}
+
+.input-edit-nome {
+    font-size: 28px;
+    font-family: inherit;
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.textarea-edit-descricao {
+    font-size: 15px;
+    line-height: 1.4;
+    width: 100%;
+    min-height: 100px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+    resize: vertical;
+    font-family: inherit;
+}
 
 
 .descricao {

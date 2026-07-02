@@ -22,7 +22,7 @@ class Usuario{
 
     public function setIdUsuario($Id)
     {
-        return $this->idUsuario = $Id;
+        $this->idUsuario = $Id;
     }
     
     public function getNome()
@@ -32,7 +32,7 @@ class Usuario{
 
     public function setNome($pNome)
     {
-        return $this->nome = $pNome;
+        $this->nome = $pNome;
     }
 
     public function getEmail()
@@ -42,7 +42,7 @@ class Usuario{
 
     public function setEmail($pEmail)
     {
-        return $this->email = $pEmail;
+        $this->email = $pEmail;
     }
 
     public function getSenha()
@@ -52,7 +52,7 @@ class Usuario{
 
     public function setSenha($pSenha)
     {
-        return $this->senha = $pSenha;
+        $this->senha = $pSenha;
     }
 
     public function getDescricaoUsuario()
@@ -62,7 +62,7 @@ class Usuario{
 
     public function setDescricaoUsuario($pDescricaoUsuario)
     {
-        return $this->descricaoUsuario = $pDescricaoUsuario;
+        $this->descricaoUsuario = $pDescricaoUsuario;
     }
 }
 ?>
