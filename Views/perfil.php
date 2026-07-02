@@ -3,6 +3,7 @@ include 'includes/menu.php';
 require_once '../dao/usuarioDAO.inc.php';
 require_once '../dao/postDAO.inc.php';
 require_once '../dao/comentarioDAO.inc.php';
+require_once '../dao/likeDAO.inc.php';
 require_once '../classes/usuario.inc.php';
 
 session_start();
@@ -43,6 +44,7 @@ $totalComentarios = $comentarioDAO->countComentariosByUsuario($usuarioDoPerfil->
 
 $postsDoPerfil = $postDAO->getPostsByUsuarioId($usuarioDoPerfil->getIdUsuario());
 $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfil->getIdUsuario());
+$likeDAO = new LikeDAO();
 
 ?>
 <!DOCTYPE html>
@@ -53,6 +55,7 @@ $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfi
     <title>NKHands - Perfil</title>
     <link rel="stylesheet" href="css/perfil.css">
     <link rel="stylesheet" href="css/comentarios.css">
+    <link rel="stylesheet" href="css/likes.css">
 </head>
 
 <div class="perfil-container">
@@ -142,6 +145,21 @@ $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfi
                         <p><?= nl2br(htmlspecialchars($post['texto'])) ?></p>
                         <small>POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?></small>
 
+                        <?php
+                            $totalLikes = $likeDAO->contarLikes($post['idpost']);
+                            $usuarioCurtiu = $likeDAO->verificarLike($usuarioLogado->getIdUsuario(), $post['idpost']);
+                        ?>
+                        <div class="like-secao">
+                            <form action="../controlers/controlerLike.php" method="POST" style="margin: 0;">
+                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                <button type="submit" class="btn-like <?= $usuarioCurtiu ? 'liked' : '' ?>">
+                                    <?= $usuarioCurtiu ? 'Curtido' : 'Curtir' ?>
+                                </button>
+                            </form>
+                            <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
+                        </div>
+
                         <!-- Seção de Comentários -->
                         <div class="comentarios-secao">
                             <h5 class="comentarios-titulo">Comentários</h5>
@@ -195,6 +213,21 @@ $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfi
                         <?php endif; ?>
                         <p><?= nl2br(htmlspecialchars($post['texto'])) ?></p>
                         <small>POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?></small>
+
+                        <?php
+                            $totalLikes = $likeDAO->contarLikes($post['idpost']);
+                            $usuarioCurtiu = $likeDAO->verificarLike($usuarioLogado->getIdUsuario(), $post['idpost']);
+                        ?>
+                        <div class="like-secao">
+                            <form action="../controlers/controlerLike.php" method="POST" style="margin: 0;">
+                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                <button type="submit" class="btn-like <?= $usuarioCurtiu ? 'liked' : '' ?>">
+                                    <?= $usuarioCurtiu ? 'Curtido' : 'Curtir' ?>
+                                </button>
+                            </form>
+                            <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
+                        </div>
 
                         <div class="comentarios-secao">
                             <h5 class="comentarios-titulo">Comentários</h5>

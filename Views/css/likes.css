@@ -1,0 +1,31 @@
+.like-secao {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-like {
+    background: none;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-like.liked {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.like-count {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}

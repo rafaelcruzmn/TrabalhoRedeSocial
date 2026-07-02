@@ -3,6 +3,7 @@ include 'includes/menu.php';
 require_once '../classes/usuario.inc.php';
 require_once '../dao/postDAO.inc.php';
 require_once '../dao/comentarioDAO.inc.php';
+require_once '../dao/likeDAO.inc.php';
 
 session_start();
 
@@ -10,10 +11,12 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: formLogin.php");
     exit();
 }
+$usuarioLogado = $_SESSION['usuario'];
 
 $postDAO = new PostDAO();
 $posts = $postDAO->getTodosPosts();
 $comentarioDAO = new ComentarioDAO();
+$likeDAO = new LikeDAO();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -23,6 +26,7 @@ $comentarioDAO = new ComentarioDAO();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NKHands - Criar Post</title>
     <link rel="stylesheet" href="css/explorar.css">
+    <link rel="stylesheet" href="css/likes.css">
     <link rel="stylesheet" href="css/comentarios.css">
 </head>
 
@@ -78,6 +82,21 @@ $comentarioDAO = new ComentarioDAO();
                         <small>
                             POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?>
                         </small>
+
+                        <?php
+                            $totalLikes = $likeDAO->contarLikes($post['idpost']);
+                            $usuarioCurtiu = $likeDAO->verificarLike($usuarioLogado->getIdUsuario(), $post['idpost']);
+                        ?>
+                        <div class="like-secao">
+                            <form action="../controlers/controlerLike.php" method="POST" style="margin: 0;">
+                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                <button type="submit" class="btn-like <?= $usuarioCurtiu ? 'liked' : '' ?>">
+                                    <?= $usuarioCurtiu ? 'Curtido' : 'Curtir' ?>
+                                </button>
+                            </form>
+                            <span class="like-count"><?= $totalLikes ?> <?= ($totalLikes == 1) ? 'curtida' : 'curtidas' ?></span>
+                        </div>
 
                         <!-- Seção de Comentários -->
                         <div class="comentarios-secao">
