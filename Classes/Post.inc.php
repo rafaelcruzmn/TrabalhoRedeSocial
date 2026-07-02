@@ -1,33 +1,26 @@
 <?php
-    public class Post{
-        private Usuario $usuario;
-        private $post_id;
-        private $titulo;
-        private $descricaoPost;
-        private $texto;
-        private $data_postagem;
+class Post
+{
+    private $idpost;
+    private $titulo;
+    private $descricao;
+    private $texto;
+    private $datapost;
+    private $usuario_idusuario;
 
-    public __construct(){
-       
-    }
-
-    public function setPost($usuario, $titulo, $descricaoPost, $texto, $data_postagem)
+    public function __construct($idpost, $titulo, $descricao, $texto, $datapost, $usuario_idusuario)
     {
-        $this->usuario = $usuario;
+        $this->idpost = $idpost;
         $this->titulo = $titulo;
-        $this->descricaoPost = $descricaoPost;
+        $this->descricao = $descricao;
         $this->texto = $texto;
-        $this->data_postagem = strtotime($data_postagem);
+        $this->datapost = $datapost;
+        $this->usuario_idusuario = $usuario_idusuario;
     }
 
-    public function getPost_id()
+    public function getIdpost()
     {
-        return $this->post_id;
-    }
-
-    public function setPost_id($pId)
-    {
-        return $this->post_id = $pId;
+        return $this->idpost;
     }
 
     public function getTitulo()
@@ -35,19 +28,9 @@
         return $this->titulo;
     }
 
-    public function setTitulo($pTitulo)
+    public function getDescricao()
     {
-        return $this->titulo = $pTitulo;
-    }
-
-    public function getDescricaoPost()
-    {
-        return $this->descricaoPost;
-    }
-
-    public function setDescricaoPost($pDescricaoPost)
-    {
-        return $this->descricaoPost = $pDescricaoPost;
+        return $this->descricao;
     }
 
     public function getTexto()
@@ -55,19 +38,44 @@
         return $this->texto;
     }
 
-    public function setTexto($pTexto)
+    public function getDatapost()
     {
-        return $this->texto = $pTexto;
+        return $this->datapost;
     }
 
-    public function getData_postagem()
+    public function getUsuario_idusuario()
     {
-        return $this->data_postagem;
+        return $this->usuario_idusuario;
     }
 
-    public function setData_postagem($pData_postagem)
+    public function setIdpost($idpost)
     {
-        return $this->data_postagem = strtotime($pData_postagem);
+        $this->idpost = $idpost;
+    }
+
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+    }
+
+    public function setDescricao($descricao)
+    {
+        $this->descricao = $descricao;
+    }
+
+    public function setTexto($texto)
+    {
+        $this->texto = $texto;
+    }
+
+    public function setDatapost($datapost)
+    {
+        $this->datapost = $datapost;
+    }
+
+    public function setUsuario_idusuario($usuario_idusuario)
+    {
+        $this->usuario_idusuario = $usuario_idusuario;
     }
 }
 ?>
