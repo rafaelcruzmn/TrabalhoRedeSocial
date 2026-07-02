@@ -3,6 +3,7 @@ include 'includes/menu.php';
 require_once '../dao/usuarioDAO.inc.php';
 require_once '../dao/postDAO.inc.php';
 require_once '../dao/comentarioDAO.inc.php';
+require_once '../dao/likeDAO.inc.php';
 require_once '../classes/usuario.inc.php';
 
 session_start();
@@ -44,6 +45,7 @@ $totalComentarios = $comentarioDAO->countComentariosByUsuario($usuarioDoPerfil->
 // Buscar os posts do usuário do perfil
 $postsDoPerfil = $postDAO->getPostsByUsuarioId($usuarioDoPerfil->getIdUsuario());
 $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfil->getIdUsuario());
+$likeDAO = new LikeDAO();
 
 ?>
 <!DOCTYPE html>
@@ -166,8 +168,6 @@ $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfi
                         <p><?= nl2br(htmlspecialchars($post['texto'])) ?></p>
                         <small>POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?></small>
 
-<<<<<<< HEAD
-=======
                         <?php
                             $totalLikes = $likeDAO->contarLikes($post['idpost']);
                             $usuarioCurtiu = $likeDAO->verificarLike($usuarioLogado->getIdUsuario(), $post['idpost']);
@@ -194,7 +194,6 @@ $postsComentados = $comentarioDAO->getPostsComentadosPeloUsuario($usuarioDoPerfi
                             </div>
                         <?php endif; ?>
 
->>>>>>> feature/exclusao-post
                         <!-- Seção de Comentários -->
                         <div class="comentarios-secao">
                             <h5 class="comentarios-titulo">Comentários</h5>
