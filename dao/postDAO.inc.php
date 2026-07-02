@@ -47,5 +47,19 @@ class PostDAO
         $resultado = $sql->fetch(PDO::FETCH_ASSOC);
         return $resultado['total'] ?? 0;
     }
+
+    public function getPostsByUsuarioId($idUsuario)
+    {
+        $sql = $this->con->prepare(
+            "SELECT p.*, u.usuario as nome_autor, u.idusuario as autor_id
+             FROM Post p
+             JOIN Usuario u ON p.usuario_idusuario = u.idusuario
+             WHERE p.usuario_idusuario = :idUsuario
+             ORDER BY p.datapost DESC"
+        );
+        $sql->bindValue(':idUsuario', $idUsuario);
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

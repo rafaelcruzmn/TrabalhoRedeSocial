@@ -41,6 +41,9 @@ $totalPosts = $postDAO->countPostsByUsuario($usuarioDoPerfil->getIdUsuario());
 $comentarioDAO = new ComentarioDAO();
 $totalComentarios = $comentarioDAO->countComentariosByUsuario($usuarioDoPerfil->getIdUsuario());
 
+// Buscar os posts do usuário do perfil
+$postsDoPerfil = $postDAO->getPostsByUsuarioId($usuarioDoPerfil->getIdUsuario());
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -49,6 +52,7 @@ $totalComentarios = $comentarioDAO->countComentariosByUsuario($usuarioDoPerfil->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NKHands - Perfil</title>
     <link rel="stylesheet" href="css/perfil.css">
+    <link rel="stylesheet" href="css/comentarios.css">
 </head>
 
 <div class="perfil-container">
@@ -142,28 +146,57 @@ $totalComentarios = $comentarioDAO->countComentariosByUsuario($usuarioDoPerfil->
         </div>
 
         <div class="lista-posts">
-            <div class="post">
-                <span>
-                    @USUARIO
-                </span>
-                <h2>
-                    Titulo do post
-                </h2>
-                <h4>
-                    ASSUNTO DO POST
-                </h4>
-                <p>
-                    Texto do post que será carregado
-                    pelo sistema.
-                </p>
-                <small>
-                    POSTAGEM FEITA EM 00/00/0000
-                </small>
-            </div>
+            <?php if (count($postsDoPerfil) > 0) : ?>
+                <?php foreach ($postsDoPerfil as $post) : ?>
+                    <div class="post">
+                        <span>
+                            <a href="perfil.php?id=<?= $post['autor_id'] ?>" style="text-decoration: none; color: inherit;">
+                                @<?= htmlspecialchars($post['nome_autor']) ?>
+                            </a>
+                        </span>
+                        <h2><?= htmlspecialchars($post['titulo']) ?></h2>
+                        <?php if (!empty($post['descricao'])) : ?>
+                            <h4><?= htmlspecialchars($post['descricao']) ?></h4>
+                        <?php endif; ?>
+                        <p><?= nl2br(htmlspecialchars($post['texto'])) ?></p>
+                        <small>POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?></small>
 
-            <div class="sem-posts">
-                Esse usuário não possui posts!
-            </div>
+                        <!-- Seção de Comentários -->
+                        <div class="comentarios-secao">
+                            <h5 class="comentarios-titulo">Comentários</h5>
+                            <?php 
+                                $comentarios = $comentarioDAO->getComentariosByPostId($post['idpost']);
+                                if (count($comentarios) > 0): 
+                            ?>
+                                <div class="lista-comentarios">
+                                    <?php foreach ($comentarios as $comentario): ?>
+                                        <div class="comentario">
+                                            <p>
+                                                <a href="perfil.php?id=<?= $comentario['usuario_idusuario'] ?>">
+                                                    <strong>@<?= htmlspecialchars($comentario['nome_autor']) ?></strong>
+                                                </a>:
+                                                <?= htmlspecialchars($comentario['texto']) ?>
+                                            </p>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <p class="sem-comentarios">Seja o primeiro a comentar!</p>
+                            <?php endif; ?>
+
+                            <form action="../controlers/controlerComentario.php" method="POST" class="form-comentario">
+                                <input type="hidden" name="opcao" value="1">
+                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                <input type="text" name="texto" placeholder="Escreva um comentário..." required>
+                                <button type="submit">Comentar</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <div class="sem-posts">Esse usuário ainda não possui posts!</div>
+            <?php endif; ?>
         </div>
     </section>
 

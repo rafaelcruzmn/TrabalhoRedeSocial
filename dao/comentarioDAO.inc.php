@@ -1,5 +1,6 @@
 <?php
 require_once 'conexao.inc.php';
+require_once '../classes/comentario.inc.php';
 
 class ComentarioDAO
 {
@@ -18,6 +19,29 @@ class ComentarioDAO
         $sql->execute();
         $resultado = $sql->fetch(PDO::FETCH_ASSOC);
         return $resultado['total'] ?? 0;
+    }
+
+    public function getComentariosByPostId($idPost)
+    {
+        $sql = $this->con->prepare(
+            "SELECT c.*, u.usuario as nome_autor 
+             FROM comentario c
+             JOIN usuario u ON c.usuario_idusuario = u.idusuario
+             WHERE c.post_idpost = :idPost
+             ORDER BY c.datacoment ASC"
+        );
+        $sql->bindValue(':idPost', $idPost);
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function inserirComentario(Comentario $comentario)
+    {
+        $sql = $this->con->prepare("INSERT INTO comentario (texto, post_idpost, usuario_idusuario) VALUES (:texto, :idPost, :idUsuario)");
+        $sql->bindValue(':texto', $comentario->getTexto());
+        $sql->bindValue(':idPost', $comentario->getPost_idpost());
+        $sql->bindValue(':idUsuario', $comentario->getUsuario_idusuario());
+        $sql->execute();
     }
 }
 ?>

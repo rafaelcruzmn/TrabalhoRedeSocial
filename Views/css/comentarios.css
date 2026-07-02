@@ -1,0 +1,75 @@
+/* Estilos para a Seção de Comentários */
+.comentarios-secao {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.comentarios-titulo {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.lista-comentarios {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.comentario {
+    font-size: 14px;
+    margin-bottom: 8px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.comentario p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.comentario a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.comentario a:hover {
+    text-decoration: underline;
+}
+
+.sem-comentarios {
+    font-size: 13px;
+    color: #888;
+    font-style: italic;
+}
+
+/* Formulário de Comentário */
+.form-comentario {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.form-comentario input[type="text"] {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-comentario button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.form-comentario button:hover {
+    background-color: #0056b3;
+}

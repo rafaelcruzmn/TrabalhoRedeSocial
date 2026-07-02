@@ -2,6 +2,7 @@
 include 'includes/menu.php';
 require_once '../classes/usuario.inc.php';
 require_once '../dao/postDAO.inc.php';
+require_once '../dao/comentarioDAO.inc.php';
 
 session_start();
 
@@ -12,6 +13,7 @@ if (!isset($_SESSION['usuario'])) {
 
 $postDAO = new PostDAO();
 $posts = $postDAO->getTodosPosts();
+$comentarioDAO = new ComentarioDAO();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -21,6 +23,7 @@ $posts = $postDAO->getTodosPosts();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NKHands - Criar Post</title>
     <link rel="stylesheet" href="css/explorar.css">
+    <link rel="stylesheet" href="css/comentarios.css">
 </head>
 
 <body>
@@ -75,6 +78,40 @@ $posts = $postDAO->getTodosPosts();
                         <small>
                             POSTADO EM <?= strtoupper(date('d/m/Y \à\s H:i', strtotime($post['datapost']))) ?>
                         </small>
+
+                        <!-- Seção de Comentários -->
+                        <div class="comentarios-secao">
+                            <h5 class="comentarios-titulo">Comentários</h5>
+                            
+                            <?php 
+                                $comentarios = $comentarioDAO->getComentariosByPostId($post['idpost']);
+                                if (count($comentarios) > 0): 
+                            ?>
+                                <div class="lista-comentarios">
+                                    <?php foreach ($comentarios as $comentario): ?>
+                                        <div class="comentario">
+                                            <p>
+                                                <a href="perfil.php?id=<?= $comentario['usuario_idusuario'] ?>">
+                                                    <strong>@<?= htmlspecialchars($comentario['nome_autor']) ?></strong>
+                                                </a>:
+                                                <?= htmlspecialchars($comentario['texto']) ?>
+                                            </p>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <p class="sem-comentarios">Seja o primeiro a comentar!</p>
+                            <?php endif; ?>
+
+                            <!-- Formulário para novo comentário -->
+                            <form action="../controlers/controlerComentario.php" method="POST" class="form-comentario">
+                                <input type="hidden" name="opcao" value="1">
+                                <input type="hidden" name="idpost" value="<?= $post['idpost'] ?>">
+                                <input type="hidden" name="redirect_url" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                                <input type="text" name="texto" placeholder="Escreva um comentário..." required>
+                                <button type="submit">Comentar</button>
+                            </form>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             <?php else : ?>

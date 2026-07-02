@@ -1,70 +1,72 @@
 <?php
 
-    public Class Comentario{
-        private Usuario $usuario;
-        private Post $post;
-        private $comentario_id;
-        private $textoComentario;
-        private $data_comentario;
+class Comentario
+{
+    private $idcomentario;
+    private $texto;
+    private $datacoment;
+    private $post_idpost;
+    private $usuario_idusuario;
 
-    public __construct(){}
-
-    public function setComentario($usuario, $post, $textoComentario, $data_comentario)
+    public function __construct($idcomentario, $texto, $datacoment, $post_idpost, $usuario_idusuario)
     {
-        $this->usuario = $usuario;
-        $this->post = $post;
-        $this->textoComentario = $textoComentario;
-        $this->data_comentario = strtotime($data_comentario);
+        $this->idcomentario = $idcomentario;
+        $this->texto = $texto;
+        $this->datacoment = $datacoment;
+        $this->post_idpost = $post_idpost;
+        $this->usuario_idusuario = $usuario_idusuario;
     }
 
-    public function getComentario_id()
+    // Getters
+    public function getIdcomentario()
     {
-        return $this->comentario_id;
+        return $this->idcomentario;
     }
 
-    public function setComentario_id($pId)
+    public function getTexto()
     {
-        return $this->comentario_id = $pId;
+        return $this->texto;
     }
 
-    public function getUsuario()
+    public function getDatacoment()
     {
-        return $this->usuario;
+        return $this->datacoment;
     }
 
-    public function setUsuario($pUsuario)
+    public function getPost_idpost()
     {
-        return $this->usuario = $pUsuario;
+        return $this->post_idpost;
     }
 
-    public function getPost()
+    public function getUsuario_idusuario()
     {
-        return $this->post;
+        return $this->usuario_idusuario;
     }
 
-    public function setPost($pPost)
+    // Setters
+    public function setIdcomentario($idcomentario)
     {
-        return $this->post = $pPost;
+        $this->idcomentario = $idcomentario;
     }
 
-    public function getTextoComentario()
+    public function setTexto($texto)
     {
-        return $this->textoComentario;
+        $this->texto = $texto;
     }
 
-    public function setTextoComentario($pTextoComentario)
+    public function setDatacoment($datacoment)
     {
-        return $this->textoComentario = $pTextoComentario;
+        $this->datacoment = $datacoment;
     }
 
-    public function getData_comentario()
+    public function setPost_idpost($post_idpost)
     {
-        return $this->data_comentario;
+        $this->post_idpost = $post_idpost;
     }
 
-    public function setData_comentario($pData_comentario)
+    public function setUsuario_idusuario($usuario_idusuario)
     {
-        return $this->data_comentario = strtotime($pData_comentario);
+        $this->usuario_idusuario = $usuario_idusuario;
     }
 }
 ?>
