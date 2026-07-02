@@ -3,111 +3,62 @@ CREATE DATABASE RedeSocial;
 USE RedeSocial;
 
 CREATE TABLE Usuario (
-
-    idUsuario INT AUTO_INCREMENT PRIMARY KEY,
-
-    Usuario VARCHAR(45) NOT NULL UNIQUE,
-
-    Senha VARCHAR(255) NOT NULL,
-
-    Email VARCHAR(200) NOT NULL UNIQUE,
-
-    Descricao VARCHAR(255)
-
+    idusuario INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(45) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    email VARCHAR(200) NOT NULL UNIQUE,
+    descricao VARCHAR(255)
 );
 
-
 CREATE TABLE Post (
-
-    idPost INT AUTO_INCREMENT PRIMARY KEY,
-
-    Descricao VARCHAR(100),
-
-    Titulo VARCHAR(30) NOT NULL,
-
-    Texto VARCHAR(255) NOT NULL,
-
-    DataPost DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-
-    Usuario_idUsuario INT NOT NULL,
-
+    idpost INT AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(100),
+    titulo VARCHAR(30) NOT NULL,
+    texto VARCHAR(255) NOT NULL,
+    datapost DATETIME DEFAULT CURRENT_TIMESTAMP,
+    usuario_idusuario INT NOT NULL,
 
     CONSTRAINT fk_Post_Usuario
-
-    FOREIGN KEY (Usuario_idUsuario)
-
-    REFERENCES Usuario(idUsuario)
-
+    FOREIGN KEY (usuario_idusuario)
+    REFERENCES Usuario(idusuario)
     ON DELETE CASCADE
-
 );
 
 CREATE TABLE Comentario (
-
-    idComentario INT AUTO_INCREMENT PRIMARY KEY,
-
-
-    Texto VARCHAR(255) NOT NULL,
-
-
-    DataComent DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-
-    Post_idPost INT NOT NULL,
-
-    Usuario_idUsuario INT NOT NULL,
-
+    idcomentario INT AUTO_INCREMENT PRIMARY KEY,
+    texto VARCHAR(255) NOT NULL,
+    datacoment DATETIME DEFAULT CURRENT_TIMESTAMP,
+    post_idpost INT NOT NULL,
+    usuario_idusuario INT NOT NULL,
 
     CONSTRAINT fk_Comentario_Post
-
-    FOREIGN KEY (Post_idPost)
-
-    REFERENCES Post(idPost)
-
+    FOREIGN KEY (post_idpost)
+    REFERENCES Post(idpost)
     ON DELETE CASCADE,
 
-
     CONSTRAINT fk_Comentario_Usuario
-
-    FOREIGN KEY (Usuario_idUsuario)
-
-    REFERENCES Usuario(idUsuario)
-
+    FOREIGN KEY (usuario_idusuario)
+    REFERENCES Usuario(idusuario)
     ON DELETE CASCADE
-
 );
 
 CREATE TABLE Likes (
-
-    idLikes INT AUTO_INCREMENT PRIMARY KEY,
-
-
-    Usuario_idUsuario INT NOT NULL,
-
-    Post_idPost INT NOT NULL,
-
+    idlikes INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_idusuario INT NOT NULL,
+    post_idpost INT NOT NULL,
 
     CONSTRAINT fk_Like_Usuario
-
-    FOREIGN KEY (Usuario_idUsuario)
-
-    REFERENCES Usuario(idUsuario)
-
+    FOREIGN KEY (usuario_idusuario)
+    REFERENCES Usuario(idusuario)
     ON DELETE CASCADE,
 
-
     CONSTRAINT fk_Like_Post
-
-    FOREIGN KEY (Post_idPost)
-
-    REFERENCES Post(idPost)
-
+    FOREIGN KEY (post_idpost)
+    REFERENCES Post(idpost)
     ON DELETE CASCADE,
 
     UNIQUE(
-        Usuario_idUsuario,
-        Post_idPost
+        usuario_idusuario,
+        post_idpost
     )
-
 );
