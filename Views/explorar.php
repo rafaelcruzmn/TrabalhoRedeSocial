@@ -150,7 +150,7 @@ $likeDAO = new LikeDAO();
                                 <button type="submit">Comentar</button>
                             </form>
                         </div>
-                    </div> <!-- Fim do .post -->
+                    </div>
                 <?php endforeach; ?>
             <?php else : ?>
                 <div class="sem-posts">

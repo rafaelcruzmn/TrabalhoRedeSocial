@@ -7,58 +7,35 @@
     color: rgb(0, 0, 0);
 }
 
-
-
-/* PARTE ESQUERDA */
-
 .perfil-info {
-
     width: 35%;
-
     background: #b8b9bd;
-
     padding: 40px;
-
     box-sizing: border-box;
-
 }
 
 
 .perfil-titulo {
-
     display: flex;
-
     align-items: center;
-
     gap: 10px;
-
 }
 
 
 .perfil-info h1 {
-
     font-size: 30px;
-
     font-weight: normal;
-
     margin: 0;
-
 }
 
 
 
 .btn-editar {
-
     border: none;
-
     background: #ddd;
-
     font-size: 20px;
-
     cursor: pointer;
-
     padding: 5px 8px;
-
 }
 
 .btn-salvar,
@@ -108,83 +85,46 @@
 
 
 .descricao {
-
     font-size: 15px;
-
     line-height: 1.4;
-
     max-width: 300px;
-
 }
 
 
 
 .estatisticas {
-
     margin-top: 50px;
-
     font-size: 12px;
-
 }
-
-
-
-
-
-/* CONTEUDO */
 
 .perfil-conteudo {
-
     width: 65%;
-
     background: white;
-
 }
 
-
-
-
-
-/* MENU DAS ABAS */
-
 .sub-menu {
-
     height: 40px;
-
     display: flex;
-
     align-items: center;
-
     gap: 15px;
-
     padding-left: 10px;
-
     border-bottom: 1px solid #ddd;
-
 }
 
 
 
 .aba {
-
     background: transparent;
-
     border: none;
-
     font-size: 18px;
-
     color: rgb(0, 0, 0);
-
     cursor: pointer;
-
 }
 
 
 
 .aba:hover {
-
     text-decoration: underline;
-
 }
 
 .aba.ativa {
@@ -201,68 +141,43 @@
     margin: 15px auto;
 }
 
-
-
-
-
-
-/* POSTS */
-
-
 .lista-posts {
-
     padding: 0;
-
 }
 
 
 
 .post {
-
     background: #eeeeee;
-
     padding: 35px;
-
     margin-bottom: 25px;
-
     color: rgb(0, 0, 0);
-
 }
 
 
 
 .post span {
-
     font-size: 14px;
-
 }
 
 
 
 .post h2 {
-
     font-size: 18px;
-
     margin-bottom: 3px;
-
 }
 
 
 
 .post h4 {
-
     font-size: 12px;
-
 }
 
 
 
 .post p {
-
     font-size: 14px;
-
     max-width: 500px;
-
 }
 
 
@@ -273,27 +188,13 @@
 
 }
 
-
-
-
-
-/* SEM CONTEUDO */
-
-
 .sem-posts {
-
     height: 120px;
-
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
     background: #eee;
-
     font-weight: bold;
-
     color: rgb(0, 0, 0);
 
 }
